@@ -14,12 +14,10 @@ namespace RestApiWithAkka
         {
             var system = ActorSystem.Create("my-system");
 
-            var uploader = system.ActorOf(FileUploader.Props(), "file_uploader");
-
-            var secondUploder = system.ActorOf(FileUploader.Props(), "file_uploader");
+            var uploader = system.ActorOf(UploadSupervisor.Props(), "supervisor");
 
             uploader.Tell(new FileUploadRequest("some file name"));
-            secondUploder.Tell(new FileUploadRequest("some file name"));
+            uploader.Tell(new FileUploadRequest("some file name"));
         }
     }
 }

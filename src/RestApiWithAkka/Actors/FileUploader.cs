@@ -34,4 +34,35 @@ namespace RestApiWithAkka.Actors
             return Akka.Actor.Props.Create(() => new FileUploader());
         }
     }
+
+    public class UploadSupervisor: ReceiveActor
+    {
+        public UploadSupervisor()
+        {
+            Receive<FileUploadRequest>(req => Handle(req));
+        }
+
+        protected void Handle(FileUploadRequest req)
+        {
+            string childName = NormalizeName(req.FileName);
+            var child = Context.Child(childName);
+            if (child.IsNobody())
+            {
+                child = Context.ActorOf(FileUploader.Props(), childName);
+            }
+            
+            child.Tell(req);
+        }
+
+        public static Props Props()
+        {
+            return Akka.Actor.Props.Create(() => new UploadSupervisor());
+        }
+
+        private string NormalizeName(string name)
+        {
+            return name.Replace(" ", "-");
+        }
+    }
+
 }
