@@ -32,8 +32,10 @@ namespace RestApiWithAkka.Actors
         protected void Handle(CloudUploadCompleted req)
         {
             Console.WriteLine("CloudUploadCompleted received: " + req.FileName + " on " + Self.Path + " [" + Self.GetHashCode() + " ]");
-            
-            Self.Tell(PoisonPill.Instance);
+
+            Context.Sender.Tell(PoisonPill.Instance);
+            Context.Parent.Tell(new FileUploadCompleted(req.FileName));
+            Context.System.Scheduler.ScheduleOnce(TimeSpan.FromMilliseconds(100), Self, PoisonPill.Instance);
         }
 
         protected override void PostStop()
@@ -46,7 +48,6 @@ namespace RestApiWithAkka.Actors
         {
             Receive<FileUploadRequest>(req => HandleWhenUploading(req));
             Receive<CloudUploadCompleted>(req => Handle(req));
-            //TODO: add sth when upload confirmed
         }
 
         public static Props Props()

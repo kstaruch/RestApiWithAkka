@@ -50,6 +50,7 @@
     <Compile Include="Actors\Messages\CloudFileUploadRequest.cs" />
     <Compile Include="Actors\Messages\CloudUploadCompleted.cs" />
     <Compile Include="Actors\FileUploader.cs" />
+    <Compile Include="Actors\Messages\FileUploadCompleted.cs" />
     <Compile Include="Actors\Messages\FileUploadRequest.cs" />
     <Compile Include="IActorNameNormalizer.cs" />
     <Compile Include="SimpleActorNameNormalizer.cs" />

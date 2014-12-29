@@ -1,3 +1,4 @@
+using System;
 using Akka.Actor;
 using RestApiWithAkka.Actors.Messages;
 
@@ -12,12 +13,17 @@ namespace RestApiWithAkka.Actors
         {
             this.nameNormalizer = nameNormalizer;
             Receive<FileUploadRequest>(req => Handle(req));
+            Receive<FileUploadCompleted>(req => Handle(req));
+        }
 
+        protected void Handle(FileUploadCompleted req)
+        {
+            Console.WriteLine("FileUploadCompleted received: " + req.FileName + " on " + Self.Path + " [" + Self.GetHashCode() + " ]");
         }
 
         protected void Handle(FileUploadRequest req)
         {
-            string childName = nameNormalizer.NormalizeName(req.FileName);
+            var childName = nameNormalizer.NormalizeName(req.FileName);
             var child = Context.Child(childName);
             if (child.IsNobody())
             {
