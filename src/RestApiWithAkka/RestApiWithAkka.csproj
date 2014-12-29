@@ -46,7 +46,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actors\CloudFileUpload.cs" />
+    <Compile Include="Actors\Messages\CloudFileUploadRequest.cs" />
+    <Compile Include="Actors\Messages\CloudUploadCompleted.cs" />
     <Compile Include="Actors\FileUploader.cs" />
+    <Compile Include="Actors\Messages\FileUploadRequest.cs" />
+    <Compile Include="IActorNameNormalizer.cs" />
+    <Compile Include="SimpleActorNameNormalizer.cs" />
+    <Compile Include="Actors\UploadSupervisor.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
