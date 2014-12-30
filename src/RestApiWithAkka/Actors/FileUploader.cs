@@ -24,7 +24,7 @@ namespace RestApiWithAkka.Actors
         protected void HandleInitial(FileUploadRequest req)
         {
             var newReq = new CloudFileUploadRequest(req.FileName);
-            var child = Context.ActorOf(CloudFileUpload.Props(), "cloud_" + nameNormalizer.NormalizeName(req.FileName));
+            var child = Context.ActorOf(CloudFileUploader.Props(), "cloud_" + nameNormalizer.NormalizeName(req.FileName));
             child.Tell(newReq);
             Become(Uploading);
         }

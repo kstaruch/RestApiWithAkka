@@ -6,12 +6,13 @@ namespace RestApiWithAkka.Actors
 {
     public class UploadSupervisor: ReceiveActor
     {
-        
         private readonly IActorNameNormalizer nameNormalizer;
+        private readonly Props fileUploaderProps;
 
-        public UploadSupervisor(IActorNameNormalizer nameNormalizer)
+        public UploadSupervisor(IActorNameNormalizer nameNormalizer, Props fileUploaderProps)
         {
             this.nameNormalizer = nameNormalizer;
+            this.fileUploaderProps = fileUploaderProps;
             Receive<FileUploadRequest>(req => Handle(req));
             Receive<FileUploadCompleted>(req => Handle(req));
         }
@@ -27,7 +28,7 @@ namespace RestApiWithAkka.Actors
             var child = Context.Child(childName);
             if (child.IsNobody())
             {
-                child = Context.ActorOf(FileUploader.Props(), childName);
+                child = Context.ActorOf(fileUploaderProps, childName);
             }
             
             child.Tell(req);
@@ -35,7 +36,12 @@ namespace RestApiWithAkka.Actors
 
         public static Props Props()
         {
-            return Akka.Actor.Props.Create(() => new UploadSupervisor(new SimpleActorNameNormalizer()));
+            return Props(new SimpleActorNameNormalizer(), FileUploader.Props());
+        }
+
+        public static Props Props(IActorNameNormalizer nameNormalizer, Props fileUploaderProps)
+        {
+            return Akka.Actor.Props.Create(() => new UploadSupervisor(nameNormalizer, fileUploaderProps));
         }
     }
 }

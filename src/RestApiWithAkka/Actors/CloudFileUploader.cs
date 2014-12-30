@@ -5,9 +5,9 @@ using RestApiWithAkka.Actors.Messages;
 
 namespace RestApiWithAkka.Actors
 {
-    public class CloudFileUpload: ReceiveActor
+    public class CloudFileUploader: ReceiveActor
     {
-        public CloudFileUpload()
+        public CloudFileUploader()
         {
             Receive<CloudFileUploadRequest>(req => Handle(req));
         }
@@ -23,12 +23,12 @@ namespace RestApiWithAkka.Actors
         protected override void PostStop()
         {
             base.PostStop();
-            Console.WriteLine("PostStop for CloudFileUpload: " + Self.Path + " [" + Self.GetHashCode() + " ]");
+            Console.WriteLine("PostStop for CloudFileUploader: " + Self.Path + " [" + Self.GetHashCode() + " ]");
         }
 
         public static Props Props()
         {
-            return Akka.Actor.Props.Create(() => new CloudFileUpload());
+            return Akka.Actor.Props.Create(() => new CloudFileUploader());
         }
     }
 }

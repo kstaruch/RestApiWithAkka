@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestApiWithAkka.Console", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestApiWithAkka", "RestApiWithAkka\RestApiWithAkka.csproj", "{7117642F-1417-4E2E-AF84-289BEAC74C08}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestApiWithAkka.Tests", "RestApiWithAkka.Tests\RestApiWithAkka.Tests.csproj", "{9C37DE6E-0652-40E1-9B39-0FE25F3653F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{7117642F-1417-4E2E-AF84-289BEAC74C08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7117642F-1417-4E2E-AF84-289BEAC74C08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7117642F-1417-4E2E-AF84-289BEAC74C08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C37DE6E-0652-40E1-9B39-0FE25F3653F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C37DE6E-0652-40E1-9B39-0FE25F3653F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C37DE6E-0652-40E1-9B39-0FE25F3653F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C37DE6E-0652-40E1-9B39-0FE25F3653F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
