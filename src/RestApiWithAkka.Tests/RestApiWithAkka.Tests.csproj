@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="ActorTestSpecification.cs" />
     <Compile Include="Class1.cs" />
+    <Compile Include="FileUploader\WithFileUploader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UploadSupervisor\WhenFileUploadRequested.cs" />
     <Compile Include="UploadSupervisor\WithUploadSupervisor.cs" />

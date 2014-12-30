@@ -1,4 +1,6 @@
 using System;
+using System.Net.Mime;
+using System.Runtime.InteropServices.ComTypes;
 using Akka.Actor;
 using RestApiWithAkka.Actors.Messages;
 
@@ -7,11 +9,21 @@ namespace RestApiWithAkka.Actors
     public class UploadSupervisor: ReceiveActor
     {
         private readonly IActorNameNormalizer nameNormalizer;
+        private readonly Func<ActorRefFactory, string, ActorRef> uploaderCreator;
         private readonly Props fileUploaderProps;
 
-        public UploadSupervisor(IActorNameNormalizer nameNormalizer, Props fileUploaderProps)
+//        public UploadSupervisor(IActorNameNormalizer nameNormalizer, Props fileUploaderProps)
+//        {
+//            this.nameNormalizer = nameNormalizer;
+//            this.fileUploaderProps = fileUploaderProps;
+//            Receive<FileUploadRequest>(req => Handle(req));
+//            Receive<FileUploadCompleted>(req => Handle(req));
+//        }
+
+        public UploadSupervisor(IActorNameNormalizer nameNormalizer, Func<ActorRefFactory, string, ActorRef> uploaderCreator)
         {
             this.nameNormalizer = nameNormalizer;
+            this.uploaderCreator = uploaderCreator;
             this.fileUploaderProps = fileUploaderProps;
             Receive<FileUploadRequest>(req => Handle(req));
             Receive<FileUploadCompleted>(req => Handle(req));
@@ -27,8 +39,8 @@ namespace RestApiWithAkka.Actors
             var childName = nameNormalizer.NormalizeName(req.FileName);
             var child = Context.Child(childName);
             if (child.IsNobody())
-            {
-                child = Context.ActorOf(fileUploaderProps, childName);
+            {   
+                child = uploaderCreator(Context, childName);
             }
             
             child.Tell(req);
@@ -41,7 +53,13 @@ namespace RestApiWithAkka.Actors
 
         public static Props Props(IActorNameNormalizer nameNormalizer, Props fileUploaderProps)
         {
-            return Akka.Actor.Props.Create(() => new UploadSupervisor(nameNormalizer, fileUploaderProps));
+            return Props(nameNormalizer, (ctx, name) => ctx.ActorOf(fileUploaderProps, name));
+            //return Akka.Actor.Props.Create(() => new UploadSupervisor(nameNormalizer, Context.ActorOf(fileUploaderProps)));
+        }
+
+        public static Props Props(IActorNameNormalizer nameNormalizer, Func<ActorRefFactory, string, ActorRef> maker)
+        {
+            return Akka.Actor.Props.Create(() => new UploadSupervisor(nameNormalizer, maker));
         }
     }
 }
